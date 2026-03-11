@@ -105,13 +105,9 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               onPageChanged: (index) {
                 setState(() => _currentImageIndex = index);
               },
-              itemBuilder: (_, index) => Image.network(
-                widget.item.imageUrls[index],
+              itemBuilder: (_, index) => SafeNetworkImage(
+                url: widget.item.imageUrls[index],
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  color: Colors.grey[200],
-                  child: Icon(Icons.broken_image, size: 80.sp),
-                ),
               ),
             ),
             // Image indicator dots

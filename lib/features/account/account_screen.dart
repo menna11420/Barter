@@ -225,10 +225,9 @@ class _AccountScreenState extends State<AccountScreen> {
                           ),
                           child: ClipOval(
                             child: user.photoUrl != null && user.photoUrl!.isNotEmpty
-                                ? Image.network(
-                                    user.photoUrl!,
+                                ? SafeNetworkImage(
+                                    url: user.photoUrl!,
                                     fit: BoxFit.cover,
-                                    errorBuilder: (_, __, ___) => _buildAvatarPlaceholder(user),
                                   )
                                 : _buildAvatarPlaceholder(user),
                           ),

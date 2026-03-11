@@ -255,10 +255,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       return Image.file(_newPhoto!, fit: BoxFit.cover);
     }
     if (_user?.photoUrl != null && _user!.photoUrl!.isNotEmpty) {
-      return Image.network(
-        _user!.photoUrl!,
+      return SafeNetworkImage(
+        url: _user!.photoUrl!,
         fit: BoxFit.cover,
-        errorBuilder: (_, __, ___) => _buildAvatarPlaceholder(),
       );
     }
     return _buildAvatarPlaceholder();
