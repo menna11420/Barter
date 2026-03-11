@@ -1,0 +1,6 @@
+@BarterApi_HostAddress = http://localhost:5071
+
+GET {{BarterApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
