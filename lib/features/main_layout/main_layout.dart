@@ -292,12 +292,17 @@ class _MainLayoutState extends State<MainLayout> with TickerProviderStateMixin {
     });
   }
 
-  void _createItem() {
+  Future<void> _createItem() async {
     final user = ApiService.currentUser;
     if (user == null || user.isAnonymous) {
       LoginRequiredSheet.show(context, 'Add Item');
     } else {
-      Navigator.pushNamed(context, Routes.addItem);
+      final result = await Navigator.pushNamed(context, Routes.addItem);
+      if (result == true) {
+        setState(() {
+          _currentIndex = 2;
+        });
+      }
     }
   }
 }

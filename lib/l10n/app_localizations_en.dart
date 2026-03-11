@@ -320,6 +320,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sports => 'Sports';
 
   @override
+  String get service => 'Services';
+
+  @override
   String get other => 'Other';
 
   @override
@@ -423,4 +426,135 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enter_description => 'Describe your item...';
+
+  @override
+  String get items => 'Items';
+
+  @override
+  String get no_items_available => 'No items available';
+
+  @override
+  String get block_user_question => 'Block User?';
+
+  @override
+  String get block_user_warning => 'You will not be able to send or receive messages in this chat.';
+
+  @override
+  String get please_login_saved_items => 'Please login to view saved items';
+
+  @override
+  String get error_loading_saved_items => 'Error loading saved items';
+
+  @override
+  String get browse_items => 'Browse Items';
+
+  @override
+  String get remove => 'Remove';
+
+  @override
+  String get remove_from_saved => 'Remove from Saved';
+
+  @override
+  String remove_item_from_saved(Object itemName) {
+    return 'Remove \"$itemName\" from saved items?';
+  }
+
+  @override
+  String get view_details => 'View Details';
+
+  @override
+  String reviews_for(Object name) {
+    return 'Reviews for $name';
+  }
+
+  @override
+  String version(Object version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get confirm_remove_photo => 'Are you sure you want to remove your profile photo?';
+
+  @override
+  String get failed_to_load_profile => 'Failed to load profile';
+
+  @override
+  String get verify_email => 'Verify Email';
+
+  @override
+  String get verification_email_sent => 'Verification email sent!';
+
+  @override
+  String get email_not_verified => 'Email not verified yet. Please check your inbox.';
+
+  @override
+  String get check_verification => 'I\'ve Verified - Check Now';
+
+  @override
+  String get got_it => 'Got it!';
+
+  @override
+  String get resend_email => 'Resend Email';
+
+  @override
+  String get location_services_disabled => 'Location Services Disabled';
+
+  @override
+  String get enable_location_services => 'Please enable location services to use this feature.';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get permission_denied => 'Permission Denied';
+
+  @override
+  String get location_permission_required => 'Location permission is required to show your current location.';
+
+  @override
+  String get permission_required => 'Permission Required';
+
+  @override
+  String get enable_location_in_settings => 'Please enable location permission in app settings.';
+
+  @override
+  String get open_settings => 'Open Settings';
+
+  @override
+  String get cannot_delete => 'Cannot Delete';
+
+  @override
+  String get view_exchanges => 'View Exchanges';
+
+  @override
+  String get cannot_change => 'Cannot Change';
+
+  @override
+  String get offer_one_of_your_items => 'Offer one of your items';
+
+  @override
+  String get send_message => 'Send Message';
+
+  @override
+  String get chat_with_owner => 'Chat with the owner';
+
+  @override
+  String confirm_delete_item_named(Object itemName) {
+    return 'Are you sure you want to delete \"$itemName\"?';
+  }
+
+  @override
+  String get item_in_active_exchange => 'Item in Active Exchange';
+
+  @override
+  String get cannot_delete_item => 'Cannot Delete Item';
+
+  @override
+  String get how_was_your_experience => 'How was your experience?';
+
+  @override
+  String get submit => 'Submit';
 }

@@ -176,13 +176,13 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
               }
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 'edit',
                 child: Row(
                   children: [
                     Icon(Icons.edit, color: ColorsManager.purple),
                     SizedBox(width: 12),
-                    Text('Edit'),
+                    Text(AppLocalizations.of(context)!.edit),
                   ],
                 ),
               ),
@@ -195,7 +195,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                       color: ColorsManager.purple,
                     ),
                     const SizedBox(width: 12),
-                    Text(widget.item.isAvailable ? 'Mark Unavailable' : 'Mark Available'),
+                    Text(widget.item.isAvailable ? AppLocalizations.of(context)!.mark_unavailable : AppLocalizations.of(context)!.mark_available),
                   ],
                 ),
               ),
@@ -209,7 +209,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                     ),
                     const SizedBox(width: 12),
                     Text(
-                      'Delete',
+                      AppLocalizations.of(context)!.delete,
                       style: TextStyle(
                         color: widget.item.isExchanged ? Colors.grey : Colors.red,
                       ),
@@ -243,7 +243,7 @@ class _ItemDetailScreenState extends State<ItemDetailScreen> {
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: Text(
-                  'Unavailable',
+                  AppLocalizations.of(context)!.unavailable,
                   style: TextStyle(
                     color: Colors.red,
                     fontSize: 12.sp,
@@ -614,8 +614,8 @@ Location: ${widget.item.location}
                     color: ColorsManager.purple,
                   ),
                 ),
-                title: const Text('Propose Exchange'),
-                subtitle: const Text('Offer one of your items'),
+                title: Text(AppLocalizations.of(context)!.propose_exchange),
+                subtitle: Text(AppLocalizations.of(context)!.offer_one_of_your_items),
                 onTap: () => Navigator.pop(ctx, 'exchange'),
               ),
               SizedBox(height: 8.h),
@@ -631,8 +631,8 @@ Location: ${widget.item.location}
                     color: Colors.blue,
                   ),
                 ),
-                title: const Text('Send Message'),
-                subtitle: const Text('Chat with the owner'),
+                title: Text(AppLocalizations.of(context)!.send_message),
+                subtitle: Text(AppLocalizations.of(context)!.chat_with_owner),
                 onTap: () => Navigator.pop(ctx, 'chat'),
               ),
             ],
@@ -704,8 +704,8 @@ Location: ${widget.item.location}
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Delete Item'),
-        content: Text('Are you sure you want to delete "${widget.item.title}"?'),
+        title: Text(AppLocalizations.of(context)!.delete_item),
+        content: Text(AppLocalizations.of(context)!.confirm_delete_item_named(widget.item.title)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),

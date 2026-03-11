@@ -320,6 +320,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get sports => 'رياضة';
 
   @override
+  String get service => 'خدمات';
+
+  @override
   String get other => 'أخرى';
 
   @override
@@ -423,4 +426,135 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get enter_description => 'صف منتجك...';
+
+  @override
+  String get items => 'المنتجات';
+
+  @override
+  String get no_items_available => 'لا توجد منتجات متاحة';
+
+  @override
+  String get block_user_question => 'حظر المستخدم؟';
+
+  @override
+  String get block_user_warning => 'لن تتمكن من إرسال أو استقبال رسائل في هذه المحادثة.';
+
+  @override
+  String get please_login_saved_items => 'يرجى تسجيل الدخول لعرض المنتجات المحفوظة';
+
+  @override
+  String get error_loading_saved_items => 'خطأ في تحميل المنتجات المحفوظة';
+
+  @override
+  String get browse_items => 'تصفح المنتجات';
+
+  @override
+  String get remove => 'إزالة';
+
+  @override
+  String get remove_from_saved => 'إزالة من المحفوظات';
+
+  @override
+  String remove_item_from_saved(Object itemName) {
+    return 'هل تريد إزالة \"$itemName\" من المنتجات المحفوظة؟';
+  }
+
+  @override
+  String get view_details => 'عرض التفاصيل';
+
+  @override
+  String reviews_for(Object name) {
+    return 'التقييمات لـ $name';
+  }
+
+  @override
+  String version(Object version) {
+    return 'الإصدار $version';
+  }
+
+  @override
+  String get close => 'إغلاق';
+
+  @override
+  String get confirm_remove_photo => 'هل أنت متأكد من إزالة صورتك الشخصية؟';
+
+  @override
+  String get failed_to_load_profile => 'فشل في تحميل الملف الشخصي';
+
+  @override
+  String get verify_email => 'تأكيد البريد الإلكتروني';
+
+  @override
+  String get verification_email_sent => 'تم إرسال بريد التأكيد!';
+
+  @override
+  String get email_not_verified => 'البريد الإلكتروني غير مؤكد بعد. يرجى التحقق من صندوق الوارد.';
+
+  @override
+  String get check_verification => 'لقد قمت بالتأكيد - تحقق الآن';
+
+  @override
+  String get got_it => 'حسناً!';
+
+  @override
+  String get resend_email => 'إعادة إرسال البريد';
+
+  @override
+  String get location_services_disabled => 'خدمات الموقع معطلة';
+
+  @override
+  String get enable_location_services => 'يرجى تفعيل خدمات الموقع لاستخدام هذه الميزة.';
+
+  @override
+  String get ok => 'موافق';
+
+  @override
+  String get permission_denied => 'الإذن مرفوض';
+
+  @override
+  String get location_permission_required => 'إذن الموقع مطلوب لعرض موقعك الحالي.';
+
+  @override
+  String get permission_required => 'الإذن مطلوب';
+
+  @override
+  String get enable_location_in_settings => 'يرجى تفعيل إذن الموقع في إعدادات التطبيق.';
+
+  @override
+  String get open_settings => 'فتح الإعدادات';
+
+  @override
+  String get cannot_delete => 'لا يمكن الحذف';
+
+  @override
+  String get view_exchanges => 'عرض التبادلات';
+
+  @override
+  String get cannot_change => 'لا يمكن التغيير';
+
+  @override
+  String get offer_one_of_your_items => 'قدم أحد منتجاتك';
+
+  @override
+  String get send_message => 'إرسال رسالة';
+
+  @override
+  String get chat_with_owner => 'تحدث مع المالك';
+
+  @override
+  String confirm_delete_item_named(Object itemName) {
+    return 'هل أنت متأكد من حذف \"$itemName\"؟';
+  }
+
+  @override
+  String get item_in_active_exchange => 'المنتج في تبادل نشط';
+
+  @override
+  String get cannot_delete_item => 'لا يمكن حذف المنتج';
+
+  @override
+  String get how_was_your_experience => 'كيف كانت تجربتك؟';
+
+  @override
+  String get submit => 'إرسال';
 }

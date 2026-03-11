@@ -330,16 +330,9 @@ class _ExchangeDetailScreenState extends State<ExchangeDetailScreen> {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16.r),
-            child: Image.network(
-              item.imageUrl,
+            child: SafeNetworkImage(
+              url: item.imageUrl,
               fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(
-                color: ColorsManager.shimmerBaseFor(context),
-                child: Icon(
-                  Icons.image_not_supported_rounded,
-                  color: ColorsManager.textSecondaryFor(context),
-                ),
-              ),
             ),
           ),
         ),

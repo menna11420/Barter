@@ -713,6 +713,12 @@ abstract class AppLocalizations {
   /// **'Sports'**
   String get sports;
 
+  /// No description provided for @service.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get service;
+
   /// No description provided for @other.
   ///
   /// In en, this message translates to:
@@ -922,6 +928,252 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Describe your item...'**
   String get enter_description;
+
+  /// No description provided for @items.
+  ///
+  /// In en, this message translates to:
+  /// **'Items'**
+  String get items;
+
+  /// No description provided for @no_items_available.
+  ///
+  /// In en, this message translates to:
+  /// **'No items available'**
+  String get no_items_available;
+
+  /// No description provided for @block_user_question.
+  ///
+  /// In en, this message translates to:
+  /// **'Block User?'**
+  String get block_user_question;
+
+  /// No description provided for @block_user_warning.
+  ///
+  /// In en, this message translates to:
+  /// **'You will not be able to send or receive messages in this chat.'**
+  String get block_user_warning;
+
+  /// No description provided for @please_login_saved_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Please login to view saved items'**
+  String get please_login_saved_items;
+
+  /// No description provided for @error_loading_saved_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading saved items'**
+  String get error_loading_saved_items;
+
+  /// No description provided for @browse_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Items'**
+  String get browse_items;
+
+  /// No description provided for @remove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get remove;
+
+  /// No description provided for @remove_from_saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from Saved'**
+  String get remove_from_saved;
+
+  /// No description provided for @remove_item_from_saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove \"{itemName}\" from saved items?'**
+  String remove_item_from_saved(Object itemName);
+
+  /// No description provided for @view_details.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get view_details;
+
+  /// No description provided for @reviews_for.
+  ///
+  /// In en, this message translates to:
+  /// **'Reviews for {name}'**
+  String reviews_for(Object name);
+
+  /// No description provided for @version.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String version(Object version);
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @confirm_remove_photo.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to remove your profile photo?'**
+  String get confirm_remove_photo;
+
+  /// No description provided for @failed_to_load_profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load profile'**
+  String get failed_to_load_profile;
+
+  /// No description provided for @verify_email.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Email'**
+  String get verify_email;
+
+  /// No description provided for @verification_email_sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification email sent!'**
+  String get verification_email_sent;
+
+  /// No description provided for @email_not_verified.
+  ///
+  /// In en, this message translates to:
+  /// **'Email not verified yet. Please check your inbox.'**
+  String get email_not_verified;
+
+  /// No description provided for @check_verification.
+  ///
+  /// In en, this message translates to:
+  /// **'I\'ve Verified - Check Now'**
+  String get check_verification;
+
+  /// No description provided for @got_it.
+  ///
+  /// In en, this message translates to:
+  /// **'Got it!'**
+  String get got_it;
+
+  /// No description provided for @resend_email.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Email'**
+  String get resend_email;
+
+  /// No description provided for @location_services_disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Services Disabled'**
+  String get location_services_disabled;
+
+  /// No description provided for @enable_location_services.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enable location services to use this feature.'**
+  String get enable_location_services;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// No description provided for @permission_denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission Denied'**
+  String get permission_denied;
+
+  /// No description provided for @location_permission_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is required to show your current location.'**
+  String get location_permission_required;
+
+  /// No description provided for @permission_required.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission Required'**
+  String get permission_required;
+
+  /// No description provided for @enable_location_in_settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enable location permission in app settings.'**
+  String get enable_location_in_settings;
+
+  /// No description provided for @open_settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Settings'**
+  String get open_settings;
+
+  /// No description provided for @cannot_delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot Delete'**
+  String get cannot_delete;
+
+  /// No description provided for @view_exchanges.
+  ///
+  /// In en, this message translates to:
+  /// **'View Exchanges'**
+  String get view_exchanges;
+
+  /// No description provided for @cannot_change.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot Change'**
+  String get cannot_change;
+
+  /// No description provided for @offer_one_of_your_items.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer one of your items'**
+  String get offer_one_of_your_items;
+
+  /// No description provided for @send_message.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Message'**
+  String get send_message;
+
+  /// No description provided for @chat_with_owner.
+  ///
+  /// In en, this message translates to:
+  /// **'Chat with the owner'**
+  String get chat_with_owner;
+
+  /// No description provided for @confirm_delete_item_named.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete \"{itemName}\"?'**
+  String confirm_delete_item_named(Object itemName);
+
+  /// No description provided for @item_in_active_exchange.
+  ///
+  /// In en, this message translates to:
+  /// **'Item in Active Exchange'**
+  String get item_in_active_exchange;
+
+  /// No description provided for @cannot_delete_item.
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot Delete Item'**
+  String get cannot_delete_item;
+
+  /// No description provided for @how_was_your_experience.
+  ///
+  /// In en, this message translates to:
+  /// **'How was your experience?'**
+  String get how_was_your_experience;
+
+  /// No description provided for @submit.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit'**
+  String get submit;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

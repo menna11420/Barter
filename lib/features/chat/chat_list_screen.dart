@@ -413,10 +413,9 @@ class _ChatListTileState extends State<ChatListTile>
                         ),
                         child: otherUser?.photoUrl != null && otherUser!.photoUrl!.isNotEmpty
                             ? ClipOval(
-                                child: Image.network(
-                                  otherUser.photoUrl!,
+                                child: SafeNetworkImage(
+                                  url: otherUser.photoUrl!,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (_, __, ___) => _buildAvatarPlaceholder(otherUser),
                                 ),
                               )
                             : _buildAvatarPlaceholder(otherUser),

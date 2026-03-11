@@ -165,8 +165,8 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
     return Card(
       child: Padding(
         padding: REdgeInsets.all(16),
-        child: StreamBuilder<List<ItemModel>>(
-          stream: ApiService.getUserItemsStream(widget.ownerId),
+        child: FutureBuilder<List<ItemModel>>(
+          future: ApiService.getUserItems(widget.ownerId),
           builder: (context, snapshot) {
             final items = snapshot.data ?? [];
             final activeItems = items.where((i) => i.isAvailable).length;
@@ -237,8 +237,8 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
           ),
         ),
         SizedBox(height: 12.h),
-        StreamBuilder<List<ItemModel>>(
-          stream: ApiService.getUserItemsStream(widget.ownerId),
+        FutureBuilder<List<ItemModel>>(
+          future: ApiService.getUserItems(widget.ownerId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -291,14 +291,10 @@ class _OwnerProfileScreenState extends State<OwnerProfileScreen> {
                               top: Radius.circular(12.r),
                             ),
                             child: item.imageUrls.isNotEmpty
-                                ? Image.network(
-                              item.imageUrls.first,
+                                ? SafeNetworkImage(
+                              url: item.imageUrls.first,
                               width: double.infinity,
                               fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => Container(
-                                color: Colors.grey[200],
-                                child: Icon(Icons.image, color: Colors.grey),
-                              ),
                             )
                                 : Container(
                               color: Colors.grey[200],

@@ -153,10 +153,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
             ),
             child: photoUrl != null && photoUrl.isNotEmpty
                 ? ClipOval(
-                    child: Image.network(
-                      photoUrl,
+                    child: SafeNetworkImage(
+                      url: photoUrl,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => _buildAvatarPlaceholder(userName),
                     ),
                   )
                 : _buildAvatarPlaceholder(userName),
@@ -240,11 +239,11 @@ class _ChatDetailScreenState extends State<ChatDetailScreen>
         final confirm = await showDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: const Text('Block User?'),
-            content: const Text('You will not be able to send or receive messages in this chat.'),
+            title: Text(AppLocalizations.of(context)!.block_user_question),
+            content: Text(AppLocalizations.of(context)!.block_user_warning),
             actions: [
-              TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
-              TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Block', style: TextStyle(color: Colors.red))),
+              TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(AppLocalizations.of(context)!.cancel)),
+              TextButton(onPressed: () => Navigator.pop(ctx, true), child: Text(AppLocalizations.of(context)!.block, style: const TextStyle(color: Colors.red))),
             ],
           ),
         );
@@ -745,35 +744,9 @@ class MessageBubble extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(16.r),
-                    child: Image.network(
-                      message.photoUrl!,
+                    child: SafeNetworkImage(
+                      url: message.photoUrl!,
                       fit: BoxFit.cover,
-                      loadingBuilder: (context, child, progress) {
-                        if (progress == null) return child;
-                        return Container(
-                          width: 200.w,
-                          height: 200.h,
-                          color: isMe ? Colors.white.withOpacity(0.1) : ColorsManager.greyUltraLight,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              value: progress.expectedTotalBytes != null
-                                  ? progress.cumulativeBytesLoaded / progress.expectedTotalBytes!
-                                  : null,
-                              color: isMe ? Colors.white : ColorsManager.purple,
-                              strokeWidth: 2,
-                            ),
-                          ),
-                        );
-                      },
-                      errorBuilder: (_, __, ___) => Container(
-                        width: 200.w,
-                        height: 200.h,
-                        color: isMe ? Colors.white.withOpacity(0.1) : ColorsManager.greyUltraLight,
-                        child: Icon(
-                          Icons.broken_image_rounded,
-                          color: isMe ? Colors.white60 : ColorsManager.grey,
-                        ),
-                      ),
                     ),
                   ),
                 ),

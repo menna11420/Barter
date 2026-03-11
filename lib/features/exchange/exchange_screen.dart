@@ -423,16 +423,9 @@ class _ExchangesScreenState extends State<ExchangesScreen>
                             color: ColorsManager.textSecondaryFor(context),
                           ),
                         )
-                      : Image.network(
-                          item.imageUrl,
+                      : SafeNetworkImage(
+                          url: item.imageUrl,
                           fit: BoxFit.cover,
-                          errorBuilder: (_, __, ___) => Container(
-                            color: ColorsManager.shimmerBaseFor(context),
-                            child: Icon(
-                              Icons.image_not_supported_rounded,
-                              color: ColorsManager.textSecondaryFor(context),
-                            ),
-                          ),
                         ),
                   Container(
                     decoration: BoxDecoration(

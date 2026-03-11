@@ -343,17 +343,11 @@ class _ItemsMapViewScreenState extends State<ItemsMapViewScreen> {
             contentPadding: REdgeInsets.all(12),
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(12.r),
-              child: Image.network(
-                item.imageUrls.first,
+              child: SafeNetworkImage(
+                url: item.imageUrls.first,
                 width: 70.w,
                 height: 70.h,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  width: 70.w,
-                  height: 70.h,
-                  color: ColorsManager.purpleSoft,
-                  child: Icon(Icons.image, color: ColorsManager.purple),
-                ),
               ),
             ),
             title: Text(

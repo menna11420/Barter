@@ -43,16 +43,15 @@ class _ProposeExchangeScreenState extends State<ProposeExchangeScreen> {
     setState(() => _isLoading = true);
 
     try {
-      // Listen to user's available items
-      ApiService.getUserItemsStream(userId).listen((items) {
-        if (mounted) {
-          setState(() {
-            // Filter: only show available items that are not the requested item (just in case)
-            _myItems = items.where((item) => item.isAvailable).toList();
-            _isLoading = false;
-          });
-        }
-      });
+      // Fetch user's available items
+      final items = await ApiService.getUserItems(userId);
+      if (mounted) {
+        setState(() {
+          // Filter: only show available items
+          _myItems = items.where((item) => item.isAvailable).toList();
+          _isLoading = false;
+        });
+      }
     } catch (e) {
       print('Error loading items: $e');
       setState(() => _isLoading = false);
@@ -264,16 +263,9 @@ class _ProposeExchangeScreenState extends State<ProposeExchangeScreen> {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.network(
-                        firstItem.imageUrls.first,
+                      SafeNetworkImage(
+                        url: firstItem.imageUrls.first,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Center(
-                          child: Icon(
-                            Icons.image_not_supported_rounded,
-                            size: 32.sp,
-                            color: ColorsManager.textSecondaryFor(context),
-                          ),
-                        ),
                       ),
                       if (count > 1)
                         Positioned(
@@ -399,8 +391,8 @@ class _ProposeExchangeScreenState extends State<ProposeExchangeScreen> {
                   ),
                 ),
                 Expanded(
-                  child: StreamBuilder<List<ItemModel>>(
-                    stream: ApiService.getUserItemsStream(widget.requestedItem.ownerId),
+                  child: FutureBuilder<List<ItemModel>>(
+                    future: ApiService.getUserItems(widget.requestedItem.ownerId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -435,8 +427,8 @@ class _ProposeExchangeScreenState extends State<ProposeExchangeScreen> {
                             leading: ClipRRect(
                               borderRadius: BorderRadius.circular(8.r),
                               child: item.imageUrls.isNotEmpty
-                                  ? Image.network(
-                                      item.imageUrls.first,
+                                  ? SafeNetworkImage(
+                                      url: item.imageUrls.first,
                                       width: 50.w,
                                       height: 50.w,
                                       fit: BoxFit.cover,
@@ -550,17 +542,10 @@ class _ProposeExchangeScreenState extends State<ProposeExchangeScreen> {
                               top: Radius.circular(18.r),
                             ),
                             child: item.imageUrls.isNotEmpty
-                                ? Image.network(
-                              item.imageUrls.first,
-                              fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => Container(
-                                color: ColorsManager.shimmerBaseFor(context),
-                                child: Icon(
-                                  Icons.image_not_supported_rounded,
-                                  color: ColorsManager.textSecondaryFor(context),
-                                ),
-                              ),
-                            )
+                                ? SafeNetworkImage(
+                                    url: item.imageUrls.first,
+                                    fit: BoxFit.cover,
+                                  )
                                 : Container(
                               color: ColorsManager.shimmerBaseFor(context),
                               child: Icon(

@@ -29,7 +29,7 @@ class SavedItemsScreen extends StatelessWidget {
             children: [
               Icon(Icons.login, size: 64.sp, color: Colors.grey),
               SizedBox(height: 16.h),
-              Text('Please login to view saved items'),
+              Text(AppLocalizations.of(context)!.please_login_saved_items),
               SizedBox(height: 16.h),
               ElevatedButton(
                 onPressed: () {
@@ -61,7 +61,7 @@ class SavedItemsScreen extends StatelessWidget {
                 children: [
                   Icon(Icons.error_outline, size: 64.sp, color: Colors.red),
                   SizedBox(height: 16.h),
-                  Text('Error loading saved items'),
+                  Text(AppLocalizations.of(context)!.error_loading_saved_items),
                 ],
               ),
             );
@@ -95,7 +95,7 @@ class SavedItemsScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushNamed(context, Routes.mainLayout);
                     },
-                    child: const Text('Browse Items'),
+                    child: Text(AppLocalizations.of(context)!.browse_items),
                   ),
                 ],
               ),
@@ -157,8 +157,8 @@ class SavedItemsScreen extends StatelessWidget {
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Remove from Saved'),
-        content: Text('Remove "${item.title}" from saved items?'),
+        title: Text(AppLocalizations.of(context)!.remove_from_saved),
+        content: Text(AppLocalizations.of(context)!.remove_item_from_saved(item.title)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, false),
@@ -167,7 +167,7 @@ class SavedItemsScreen extends StatelessWidget {
           TextButton(
             onPressed: () => Navigator.pop(ctx, true),
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Remove'),
+            child: Text(AppLocalizations.of(context)!.remove),
           ),
         ],
       ),
@@ -218,12 +218,11 @@ class SavedItemCard extends StatelessWidget {
                       top: Radius.circular(12.r),
                     ),
                     child: item.imageUrls.isNotEmpty
-                        ? Image.network(
-                      item.imageUrls.first,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => _buildPlaceholder(),
-                    )
+                        ? SafeNetworkImage(
+                            url: item.imageUrls.first,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          )
                         : _buildPlaceholder(),
                   ),
                 ),
