@@ -26,35 +26,40 @@ class MyListingsScreen extends StatelessWidget {
         headerSliverBuilder: (context, innerBoxIsScrolled) => [
           _buildSliverAppBar(context),
         ],
-        body: StreamBuilder<List<ItemModel>>(
-          stream: ApiService.getUserItemsStream(userId),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return _buildShimmerList();
-            }
+        body: ValueListenableBuilder<int>(
+          valueListenable: ApiService.itemsNotifier,
+          builder: (context, _, __) {
+            return FutureBuilder<List<ItemModel>>(
+              future: ApiService.getUserItems(userId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return _buildShimmerList();
+                }
 
-            final items = snapshot.data ?? [];
+                final items = snapshot.data ?? [];
 
-            if (items.isEmpty) {
-              return _buildEmptyState(context);
-            }
+                if (items.isEmpty) {
+                  return _buildEmptyState(context);
+                }
 
-            return ListView.builder(
-              padding: REdgeInsets.fromLTRB(16, 8, 16, 100),
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: REdgeInsets.only(bottom: 12),
-                  child: MyListingCard(
-                    item: items[index],
-                    onEdit: () => Navigator.pushNamed(
-                      context,
-                      Routes.editItem,
-                      arguments: items[index],
-                    ),
-                    onDelete: () => _deleteItem(context, items[index]),
-                    onToggleAvailability: () => _toggleAvailability(context, items[index]),
-                  ),
+                return ListView.builder(
+                  padding: REdgeInsets.fromLTRB(16, 8, 16, 100),
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: REdgeInsets.only(bottom: 12),
+                      child: MyListingCard(
+                        item: items[index],
+                        onEdit: () => Navigator.pushNamed(
+                          context,
+                          Routes.editItem,
+                          arguments: items[index],
+                        ),
+                        onDelete: () => _deleteItem(context, items[index]),
+                        onToggleAvailability: () => _toggleAvailability(context, items[index]),
+                      ),
+                    );
+                  },
                 );
               },
             );
@@ -555,10 +560,9 @@ class _MyListingCardState extends State<MyListingCard>
                     fit: StackFit.expand,
                     children: [
                       widget.item.imageUrls.isNotEmpty
-                          ? Image.network(
-                              widget.item.imageUrls.first,
+                          ? SafeNetworkImage(
+                              url: widget.item.imageUrls.first,
                               fit: BoxFit.cover,
-                              errorBuilder: (_, __, ___) => _buildPlaceholder(),
                             )
                           : _buildPlaceholder(),
                       if (!widget.item.isAvailable)

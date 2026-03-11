@@ -381,44 +381,49 @@ class _AccountScreenState extends State<AccountScreen> {
           ),
         ],
       ),
-      child: StreamBuilder<List<ItemModel>>(
-        stream: ApiService.getUserItemsStream(userId),
-        builder: (context, itemsSnapshot) {
-          final items = itemsSnapshot.data ?? [];
-          final activeItems = items.where((i) => i.isAvailable).length;
+      child: ValueListenableBuilder<int>(
+        valueListenable: ApiService.itemsNotifier,
+        builder: (context, _, __) {
+          return FutureBuilder<List<ItemModel>>(
+            future: ApiService.getUserItems(userId),
+            builder: (context, itemsSnapshot) {
+              final items = itemsSnapshot.data ?? [];
+              final activeItems = items.where((i) => i.isAvailable).length;
 
-          return FutureBuilder<List<ExchangeModel>>(
-            future: ApiService.getUserExchanges(userId),
-            builder: (context, exchangesSnapshot) {
-              final exchanges = exchangesSnapshot.data ?? [];
-              final completedExchanges = exchanges
-                  .where((e) => e.status == ExchangeStatus.completed)
-                  .length;
+              return FutureBuilder<List<ExchangeModel>>(
+                future: ApiService.getUserExchanges(userId),
+                builder: (context, exchangesSnapshot) {
+                  final exchanges = exchangesSnapshot.data ?? [];
+                  final completedExchanges = exchanges
+                      .where((e) => e.status == ExchangeStatus.completed)
+                      .length;
 
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildStatItem(
-                    icon: Icons.inventory_2_rounded,
-                    value: items.length.toString(),
-                    label: AppLocalizations.of(context)!.total_listings,
-                    color: ColorsManager.purple,
-                  ),
-                  _buildStatDivider(),
-                  _buildStatItem(
-                    icon: Icons.check_circle_rounded,
-                    value: activeItems.toString(),
-                    label: AppLocalizations.of(context)!.active,
-                    color: Colors.green,
-                  ),
-                  _buildStatDivider(),
-                  _buildStatItem(
-                    icon: Icons.swap_horiz_rounded,
-                    value: completedExchanges.toString(),
-                    label: AppLocalizations.of(context)!.exchanges,
-                    color: Colors.orange,
-                  ),
-                ],
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildStatItem(
+                        icon: Icons.inventory_2_rounded,
+                        value: items.length.toString(),
+                        label: AppLocalizations.of(context)!.total_listings,
+                        color: ColorsManager.purple,
+                      ),
+                      _buildStatDivider(),
+                      _buildStatItem(
+                        icon: Icons.check_circle_rounded,
+                        value: activeItems.toString(),
+                        label: AppLocalizations.of(context)!.active,
+                        color: Colors.green,
+                      ),
+                      _buildStatDivider(),
+                      _buildStatItem(
+                        icon: Icons.swap_horiz_rounded,
+                        value: completedExchanges.toString(),
+                        label: AppLocalizations.of(context)!.exchanges,
+                        color: Colors.orange,
+                      ),
+                    ],
+                  );
+                },
               );
             },
           );

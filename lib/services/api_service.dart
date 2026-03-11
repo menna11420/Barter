@@ -7,6 +7,7 @@ import 'package:barter/model/item_model.dart';
 import 'package:barter/model/user_model.dart';
 import 'package:barter/model/notification_model.dart';
 import 'package:barter/model/review_model.dart';
+import 'package:flutter/foundation.dart';
 import 'api_client.dart';
 
 class UserMetadata {
@@ -58,6 +59,9 @@ class ApiService {
   static User? _currentUser;
   static User? get currentUser => _currentUser;
   static bool get isEmailVerified => true; // Assume verified
+
+  // Global notifier to trigger UI refreshes when items are modified
+  static final ValueNotifier<int> itemsNotifier = ValueNotifier<int>(0);
 
   // ==================== CACHE ====================
   static void clearCache() {}
@@ -250,9 +254,11 @@ class ApiService {
         'detailedAddress': itemData['detailedAddress'],
         'itemType': itemData['itemType'] is int ? itemData['itemType'] : (itemData['itemType'] == 'service' ? 1 : 0),
         'isRemote': itemData['isRemote'] ?? false,
+        'isAvailable': itemData['isAvailable'] ?? true,
       };
       
       final res = await _client.dio.post('/items', data: data);
+      itemsNotifier.value++;
       return res.data['id'].toString(); // Ensure it returns as String safely
     } catch (e, stack) {
       print('=== CRITICAL ERROR IN addItemDirect ===');
@@ -277,8 +283,10 @@ class ApiService {
         'detailedAddress': itemData['detailedAddress'],
         'itemType': itemData['itemType'] is int ? itemData['itemType'] : (itemData['itemType'] == 'service' ? 1 : 0),
         'isRemote': itemData['isRemote'] ?? false,
+        'isAvailable': itemData['isAvailable'],
       };
       await _client.dio.put('/items/$id', data: data);
+      itemsNotifier.value++;
     } catch (e, stack) {
       print('=== CRITICAL ERROR IN updateItemDirect ===');
       print(e);
@@ -293,19 +301,18 @@ class ApiService {
 
   static Future<void> deleteItem(String id) async {
     await _client.dio.delete('/items/$id');
+    itemsNotifier.value++;
   }
 
-  static Stream<List<ItemModel>> getItemsStream() {
-    return Stream.fromFuture(_client.dio.get('/items').then((res) {
-      return (res.data as List).map((i) => ItemModel.fromJson(i as Map<String, dynamic>)).toList();
-    }));
+  static Future<List<ItemModel>> getItems() async {
+    final res = await _client.dio.get('/items');
+    return (res.data as List).map((i) => ItemModel.fromJson(i as Map<String, dynamic>)).toList();
   }
 
-  static Stream<List<ItemModel>> getUserItemsStream(String? userId) {
-    if (userId == null) return Stream.value([]);
-    return Stream.fromFuture(_client.dio.get('/items/user/$userId').then((res) {
-      return (res.data as List).map((i) => ItemModel.fromJson(i as Map<String, dynamic>)).toList();
-    }));
+  static Future<List<ItemModel>> getUserItems(String? userId) async {
+    if (userId == null) return [];
+    final res = await _client.dio.get('/items/user/$userId');
+    return (res.data as List).map((i) => ItemModel.fromJson(i as Map<String, dynamic>)).toList();
   }
 
 
@@ -475,11 +482,16 @@ class ApiService {
     return res.data['chatId'];
   }
 
-  static Stream<List<ChatModel>> getUserChatsStream([String? userId]) {
+  static Stream<List<ChatModel>> getUserChatsStream([String? userId]) async* {
     final uid = userId ?? _currentUser?.uid;
-    if (uid == null) return Stream.value([]);
-    return Stream.fromFuture(_client.dio.get('/chats').then((res) {
-      return (res.data as List).map((c) => ChatModel.fromJson({
+    if (uid == null) {
+      yield [];
+      return;
+    }
+
+    try {
+      final res = await _client.dio.get('/chats');
+      yield (res.data as List).map((c) => ChatModel.fromJson({
         'chatId': c['chatId'],
         'participants': c['participants'],
         'itemId': c['itemId'],
@@ -489,13 +501,35 @@ class ApiService {
         'lastSenderId': c['lastSenderId'],
         'unreadCount': c['unreadCount'],
       })).toList();
-    }));
+    } catch (e) {
+      print('Initial getUserChatsStream error: $e');
+    }
+
+    yield* Stream.periodic(const Duration(seconds: 3)).asyncMap((_) async {
+      try {
+        final res = await _client.dio.get('/chats');
+        return (res.data as List).map((c) => ChatModel.fromJson({
+          'chatId': c['chatId'],
+          'participants': c['participants'],
+          'itemId': c['itemId'],
+          'itemTitle': c['itemTitle'],
+          'lastMessage': c['lastMessage'],
+          'lastMessageTime': c['lastMessageTime'],
+          'lastSenderId': c['lastSenderId'],
+          'unreadCount': c['unreadCount'],
+        })).toList();
+      } catch (e) {
+        return <ChatModel>[];
+      }
+    });
   }
 
-  static Stream<List<MessageModel>> getMessagesStream(String chatId) {
-    return Stream.fromFuture(_client.dio.get('/chats/$chatId/messages').then((res) {
-      return (res.data as List).map((m) => MessageModel.fromJson({
-        'messageId': m['messageId'],
+  static Stream<List<MessageModel>> getMessagesStream(String chatId) async* {
+    // Initial fetch
+    try {
+      final res = await _client.dio.get('/chats/$chatId/messages');
+      yield (res.data as List).map((m) => MessageModel.fromJson({
+        'messageId': m['messageId'] ?? m['id'] ?? '',
         'senderId': m['senderId'],
         'content': m['content'],
         'timestamp': m['timestamp'],
@@ -503,7 +537,27 @@ class ApiService {
         'photoUrl': m['photoUrl'],
         'isRead': m['isRead'],
       })).toList();
-    }));
+    } catch (e) {
+      print('Initial getMessages error: $e');
+    }
+
+    // Polling loop
+    yield* Stream.periodic(const Duration(seconds: 2)).asyncMap((_) async {
+      try {
+        final res = await _client.dio.get('/chats/$chatId/messages');
+        return (res.data as List).map((m) => MessageModel.fromJson({
+          'messageId': m['messageId'] ?? m['id'] ?? '',
+          'senderId': m['senderId'],
+          'content': m['content'],
+          'timestamp': m['timestamp'],
+          'messageType': m['messageType'],
+          'photoUrl': m['photoUrl'],
+          'isRead': m['isRead'],
+        })).toList();
+      } catch (e) {
+        return <MessageModel>[];
+      }
+    });
   }
 
   static Future<void> sendMessage(String chatId, String content, {bool isPhoto = false}) async {
@@ -548,7 +602,11 @@ class ApiService {
   }
   
   static Future<void> sendPhotoMessage(String chatId, dynamic photoFile) async {
-    // mock for now
+    final formData = FormData.fromMap({
+      'photo': await MultipartFile.fromFile(photoFile.path),
+    });
+    
+    await _client.dio.post('/chats/$chatId/messages/photo', data: formData);
   }
   
   static Future<ExchangeModel?> getExchangeById(String exchangeId) async {
@@ -617,7 +675,31 @@ class ApiService {
     dynamic category,
     dynamic conditions,
   }) async {
-    return [];
+    try {
+      final queryParams = <String, dynamic>{
+        'lat': latitude,
+        'lng': longitude,
+        'radius': radiusKm,
+      };
+      
+      if (category != null && category is int) {
+        queryParams['category'] = _mapCategoryToInt(category);
+      } else if (category != null) {
+        queryParams['category'] = _mapCategoryToInt(category);
+      }
+
+      final res = await _client.dio.get('/items/nearby', queryParameters: queryParams);
+      var items = (res.data as List).map((i) => ItemModel.fromJson(i as Map<String, dynamic>)).toList();
+
+      if (conditions != null && conditions is List && conditions.isNotEmpty) {
+        items = items.where((i) => conditions.contains(i.condition)).toList();
+      }
+
+      return items;
+    } catch (e) {
+      print('Error getting nearby items: $e');
+      return [];
+    }
   }
   
   static List<ItemModel>? getCachedHomeItems() {

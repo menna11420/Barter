@@ -882,47 +882,52 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       );
     }
 
-    return StreamBuilder<List<ItemModel>>(
-      stream: ApiService.getItemsStream(),
-      initialData: ApiService.getCachedHomeItems(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting && snapshot.data == null) {
-          return _buildShimmerGrid();
-        }
+    return ValueListenableBuilder<int>(
+      valueListenable: ApiService.itemsNotifier,
+      builder: (context, _, __) {
+        return FutureBuilder<List<ItemModel>>(
+          future: ApiService.getItems(),
+          initialData: ApiService.getCachedHomeItems(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting && snapshot.data == null) {
+              return _buildShimmerGrid();
+            }
 
-        if (snapshot.hasError) {
-          return _buildErrorState(snapshot.error.toString());
-        }
+            if (snapshot.hasError) {
+              return _buildErrorState(snapshot.error.toString());
+            }
 
-        final items = snapshot.data ?? [];
-        final filteredItems = _filterItems(items);
+            final items = snapshot.data ?? [];
+            final filteredItems = _filterItems(items);
 
-        if (filteredItems.isEmpty) {
-          return _buildEmptyState();
-        }
+            if (filteredItems.isEmpty) {
+              return _buildEmptyState();
+            }
 
-        return RefreshIndicator(
-          onRefresh: () async {},
-          color: ColorsManager.purple,
-          backgroundColor: ColorsManager.cardFor(context),
-          child: GridView.builder(
-            padding: REdgeInsets.all(16),
-            physics: const AlwaysScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 14.w,
-              mainAxisSpacing: 14.h,
-              childAspectRatio: 0.72,
-            ),
-            itemCount: filteredItems.length,
-            itemBuilder: (context, index) {
-              return ItemCard(
-                item: filteredItems[index],
-                onTap: () => _openItemDetail(filteredItems[index]),
-                userLocation: _currentPosition,
-              );
-            },
-          ),
+            return RefreshIndicator(
+              onRefresh: () async {},
+              color: ColorsManager.purple,
+              backgroundColor: ColorsManager.cardFor(context),
+              child: GridView.builder(
+                padding: REdgeInsets.all(16),
+                physics: const AlwaysScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 14.w,
+                  mainAxisSpacing: 14.h,
+                  childAspectRatio: 0.72,
+                ),
+                itemCount: filteredItems.length,
+                itemBuilder: (context, index) {
+                  return ItemCard(
+                    item: filteredItems[index],
+                    onTap: () => _openItemDetail(filteredItems[index]),
+                    userLocation: _currentPosition,
+                  );
+                },
+              ),
+            );
+          },
         );
       },
     );
